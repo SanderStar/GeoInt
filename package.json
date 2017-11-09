@@ -1,0 +1,17 @@
+{
+  "name": "GeoInt",
+  "version": "0.0.1",
+  "description": "A plugin for determining geo data",
+  "cordova": {
+    "id": "cordova-plugin-geo-int",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Creetion",
+  "license": "ISC"
+}
