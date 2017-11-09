@@ -10,7 +10,7 @@ Toevoegen van de plugin aan het Cordova project:
 cordova plugin add https://github.com/SanderStar/GeoInt.git
 ```
 
-Verwijderen van de plugin aan het project:
+Verwijderen van de plugin uit het project:
 ```
 cordova plugin rm https://github.com/SanderStar/GeoInt.git
 ```
