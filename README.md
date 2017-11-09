@@ -12,7 +12,7 @@ Verwijderen van de plugin aan het project:
 cordova plugin rm https://github.com/SanderStar/GeoInt.git
 
 Aanroepen van de code (API):
-
+```javascript
 var success = function(message) {
     alert(message);
   }
@@ -22,6 +22,7 @@ var success = function(message) {
   }
 
   cordova.plugins.GeoInt.coolMethod("World", success, failure);
+```
 
 Resultaat (message):
 HelloWorld
