@@ -6,10 +6,10 @@ Cordova plugin voor Android tbv Geo data
 Op dit moment bevat het slechts test data.
 
 Toevoegen van de plugin aan het Cordova project:
-cordova plugin add https://github.com/SanderStar/GeoInt.git
+    cordova plugin add https://github.com/SanderStar/GeoInt.git
 
 Verwijderen van de plugin aan het project:
-cordova plugin rm https://github.com/SanderStar/GeoInt.git
+    cordova plugin rm https://github.com/SanderStar/GeoInt.git
 
 Aanroepen van de code (API):
 ```javascript
