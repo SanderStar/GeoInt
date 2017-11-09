@@ -11,6 +11,6 @@
 			</feature>
 		</config-file>
 		<config-file parent="/*" target="AndroidManifest.xml"/>
-		<source-file src="src/android/GeoInt.java" target-dir="src/cordova-plugin-geo-int/GeoInt" />
+		<source-file src="src/android/GeoInt.java" target-dir="src/cordova.plugin.geoint/GeoInt" />
 	</platform>
 </plugin>

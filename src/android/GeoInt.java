@@ -1,4 +1,4 @@
-package cordova-plugin-geo-int;
+package cordova.plugin.geoint;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
