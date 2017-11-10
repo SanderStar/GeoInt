@@ -60,11 +60,11 @@ public class GeoInt extends CordovaPlugin {
     private void getLocation(CallbackContext callbackContext) {
       Log.d(TAG, "start getLocation");
       Criteria criteria = new Criteria();
-      Log.d(Tag, "criteria created");
+      Log.d(TAG, "criteria created");
       String bestProvider = mLocationManager.getBestProvider(criteria, false);
-      Log.d(Tag, "provider determined");
+      Log.d(TAG, "provider determined");
       Location location = mLocationManager.getLastKnownLocation(bestProvider);
-      Log.d(Tag, "location determined");
+      Log.d(TAG, "location determined");
 
       Log.d(TAG, "JSON handling");
       JSONObject position = new JSONObject();
