@@ -46,7 +46,7 @@ public class GeoInt extends CordovaPlugin {
         }
     }
 
-    private void getLocation(CallbackContext, callbackContext) {
+    private void getLocation(CallbackContext callbackContext) {
       LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
       Criteria criteria = new Criteria();
       String bestProvider = locationManager.getBestProvider(criteria, false);
