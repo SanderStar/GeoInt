@@ -29,6 +29,10 @@ public class GeoInt extends CordovaPlugin {
             this.coolMethod(message, callbackContext);
             return true;
         }
+        if ("getLocation".equals(action)) {
+          this.getLocation(callbackContext);
+          return true;
+        }
         return false;
     }
 
