@@ -1,5 +1,7 @@
 package cordova.plugin.geoint;
 
+import android.util.Log;
+
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 
@@ -12,10 +14,12 @@ import org.json.JSONObject;
  */
 public class GeoInt extends CordovaPlugin {
 
+    public static final String TAG = "GEO";
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         // TODO test logcat error printing
-        Log.e("Error " + action, "Test");
+        Log.e(TAG, "Test action is " + action);
         if ("coolMethod".equals(action)) {
             String message = args.getString(0);
             this.coolMethod(message, callbackContext);
