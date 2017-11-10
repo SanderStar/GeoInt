@@ -9,6 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.location.LocationManager;
+import android.location.Criteria;
+import android.location.Location;
+
 /**
  * This class echoes a string called from JavaScript.
  */
@@ -34,5 +38,18 @@ public class GeoInt extends CordovaPlugin {
         } else {
             callbackContext.error("Expected one non-empty string argument.");
         }
+    }
+
+    private void getLocation(CallbackContext, callbackContext) {
+      LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+      Criteria criteria = new Criteria();
+      String bestProvider = locationManager.getBestProvider(criteria, false);
+      Location location = locationManager.getLastKnownLocation(bestProvider);
+
+      JSONObject position = new JSONObject();
+      position.put("latitude", location.getLatitude());
+      position.put("longitude", location.getLongitude());
+
+      callbackContext.succes(position.toString());
     }
 }
