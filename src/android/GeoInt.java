@@ -3,6 +3,8 @@ package cordova.plugin.geoint;
 import android.util.Log;
 
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 
 import org.json.JSONArray;
@@ -21,6 +23,14 @@ import android.location.Location;
 public class GeoInt extends CordovaPlugin {
 
     public static final String TAG = "GEO";
+
+    private LocationManager mLocationManager;
+
+    @Override
+  	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+    		super.initialize(cordova, webView);
+    		mLocationManager = (LocationManager) cordova.getActivity().getSystemService(Context.LOCATION_SERVICE);
+    }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -47,10 +57,9 @@ public class GeoInt extends CordovaPlugin {
     }
 
     private void getLocation(CallbackContext callbackContext) {
-      LocationManager locationManager = (LocationManager) Context.getSystemService(Context.LOCATION_SERVICE);
       Criteria criteria = new Criteria();
-      String bestProvider = locationManager.getBestProvider(criteria, false);
-      Location location = locationManager.getLastKnownLocation(bestProvider);
+      String bestProvider = mLocationManager.getBestProvider(criteria, false);
+      Location location = mLocationManager.getLastKnownLocation(bestProvider);
 
       JSONObject position = new JSONObject();
       position.put("latitude", location.getLatitude());
