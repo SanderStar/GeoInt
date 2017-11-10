@@ -18,7 +18,7 @@ public class GeoInt extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        // TODO test logcat error printing
+        // TODO test logcat error printing (system shell: adb logcat -s GEO)
         Log.e(TAG, "Test action is " + action);
         if ("coolMethod".equals(action)) {
             String message = args.getString(0);
