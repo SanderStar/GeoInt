@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+
 import android.location.LocationManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -45,7 +47,7 @@ public class GeoInt extends CordovaPlugin {
     }
 
     private void getLocation(CallbackContext, callbackContext) {
-      LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+      LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
       Criteria criteria = new Criteria();
       String bestProvider = locationManager.getBestProvider(criteria, false);
       Location location = locationManager.getLastKnownLocation(bestProvider);
