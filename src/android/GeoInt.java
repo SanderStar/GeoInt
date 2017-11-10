@@ -10,6 +10,7 @@ import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONException;
 
 import android.content.Context;
 
@@ -62,8 +63,13 @@ public class GeoInt extends CordovaPlugin {
       Location location = mLocationManager.getLastKnownLocation(bestProvider);
 
       JSONObject position = new JSONObject();
-      position.put("latitude", location.getLatitude());
-      position.put("longitude", location.getLongitude());
+      try {
+          position.put("latitude", location.getLatitude());
+          position.put("longitude", location.getLongitude());
+      } catch (JSONException e) {
+          // TODO exception handling
+          Log.e(TAG, e.getLocalizedMessage());
+      }
 
       callbackContext.success(position.toString());
     }
