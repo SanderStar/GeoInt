@@ -70,7 +70,7 @@ public class GeoInt extends CordovaPlugin {
                 requestPermission();
             } else {
                 Log.d(TAG, "permission");
-                getLocation();
+                getLocation(this.getCallbackContext());
             }
             return true;
         }
@@ -121,9 +121,9 @@ public class GeoInt extends CordovaPlugin {
         }
     }
 
-    private void getLocation() {
+    private void getLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute getLocation");
-        getListener().start();
+        getListener().start(callbackContext);
     }
 
     private void requestPermission() {
@@ -137,7 +137,7 @@ public class GeoInt extends CordovaPlugin {
                 if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the related task you need to do.
                     Log.d(TAG, "permission grantend");
-                    getLocation();
+                    getLocation(this.getCallbackContext());
                 } else {
                     // permission denied, boo! Disable the functionality that depends on this permission.
                     Log.d(TAG, "permission denied");
