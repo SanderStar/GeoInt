@@ -94,7 +94,7 @@ public class GeoInt extends CordovaPlugin {
         return isGPSEnabled;
     }
 
-    public  LocationManager getLocationManager() {
+    public LocationManager getLocationManager() {
         return mLocationManager;
     }
 
@@ -154,7 +154,7 @@ public class GeoInt extends CordovaPlugin {
         return cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
-    private JSONObject convertLocation(Location loc) {
+    private String convertLocation(Location loc) {
         Log.d(TAG, "execute convertLocation");
         JSONObject object = new JSONObject();
         try {
@@ -166,7 +166,7 @@ public class GeoInt extends CordovaPlugin {
             Log.e(TAG, e.getLocalizedMessage());
             this.mCallbackContext.error(e.getLocalizedMessage());
         }
-        return object;
+        return object.toString();
     }
 
 
