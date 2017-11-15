@@ -10,7 +10,9 @@
 				<param name="android-package" value="cordova.plugin.geoint.GeoInt" />
 			</feature>
 		</config-file>
-		<config-file parent="/*" target="AndroidManifest.xml"/>
+		<config-file parent="/*" target="AndroidManifest.xml">
+			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+		</config-file>
 		<source-file src="src/android/cordova/plugin/geoint/GeoInt.java" target-dir="src/cordova.plugin.geoint/GeoInt" />
 		<source-file src="src/android/cordova/plugin/geoint/GeoLocationListener.java" target-dir="src/cordova.plugin.geoint/GeoLocationListener" />
 	</platform>
