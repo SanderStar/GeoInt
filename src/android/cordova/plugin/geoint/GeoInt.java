@@ -125,9 +125,9 @@ public class GeoInt extends CordovaPlugin {
     private void coolMethod(String message) {
         Log.d(TAG, "execute coolMethod");
         if (message != null && message.length() > 0) {
-            this.mCallbackContext.success("Hello " + message);
+            getCallbackContext().success("Hello " + message);
         } else {
-            this.mCallbackContext.error("Expected one non-empty string argument.");
+            getCallbackContext().error("Expected one non-empty string argument.");
         }
     }
 
@@ -179,7 +179,7 @@ public class GeoInt extends CordovaPlugin {
         } catch (JSONException e) {
             // TODO exception handling
             Log.e(TAG, e.getLocalizedMessage());
-            this.mCallbackContext.error(e.getLocalizedMessage());
+            getCallbackContext().error(e.getLocalizedMessage());
         }
         return object.toString();
     }
