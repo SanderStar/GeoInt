@@ -68,11 +68,13 @@ public class GeoLocationListener implements LocationListener {
         Log.d(TAG, "execute convertLocation");
         JSONObject object = new JSONObject();
         try {
-            object.put("latitude", 52.174887299999995);
-            object.put("longitude", 4.4477059);
+            object.put("timestamp", loc.getTime());
+            object.put("latitude", loc.getLatitude());
+            object.put("longitude", loc.getLongitude());
         } catch (JSONException e) {
             // TODO exception handling
             Log.e(TAG, e.getLocalizedMessage());
+            mOwner.getCallbackContext().error(e.getLocalizedMessage());
         }
         return object;
     }
