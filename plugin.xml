@@ -12,5 +12,6 @@
 		</config-file>
 		<config-file parent="/*" target="AndroidManifest.xml"/>
 		<source-file src="src/android/cordova/plugin/geoint/GeoInt.java" target-dir="src/cordova.plugin.geoint/GeoInt" />
+		<source-file src="src/android/cordova/plugin/geoint/GeoLocationListener.java" target-dir="src/cordova.plugin.geoint/GeoLocationListener" />
 	</platform>
 </plugin>
