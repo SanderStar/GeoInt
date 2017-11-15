@@ -47,7 +47,7 @@ public class GeoInt extends CordovaPlugin {
 
         this.mCallbackContext = callbackContext;
 
-        if (action == null || !action.matches("coolMethod|getLocation")) {
+        if (action == null || !action.matches("coolMethod|getLocation|stopLocation")) {
             // TODO set message
             return false;
         }
@@ -74,6 +74,10 @@ public class GeoInt extends CordovaPlugin {
                 getLocation(this.getCallbackContext());
             }
             return true;
+        }
+
+        if ("stopLocation".equals(action)) {
+            stopLocation(this.getCallbackContext());
         }
 
 
@@ -112,6 +116,12 @@ public class GeoInt extends CordovaPlugin {
         callbackContext.sendPluginResult(result);
     }
 
+    public void win(String data, CallbackContext callbackContext) {
+        PluginResult result = new PluginResult(PluginResult.Status.OK, data);
+        result.setKeepCallback(false);
+        callbackContext.sendPluginResult(result);
+    }
+
     private void coolMethod(String message) {
         Log.d(TAG, "execute coolMethod");
         if (message != null && message.length() > 0) {
@@ -124,6 +134,11 @@ public class GeoInt extends CordovaPlugin {
     private void getLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute getLocation");
         getListener().start(callbackContext);
+    }
+
+    private void stopLocation(CallbackContext callbackContext) {
+        Log.d(TAG, "execute stopLocation");
+        getListener().stop(callbackContext);
     }
 
     private void requestPermission() {

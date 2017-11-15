@@ -29,14 +29,20 @@ public class GeoLocationListener implements LocationListener {
     }
 
     public void start(CallbackContext callbackContext) {
+        Log.d(TAG, "execute start");
         try {
-            Log.d(TAG, "requesting location updates");
-            mOwner.getLocationManager().requestLocationUpdates(mOwner.getProvider(), 1000, 0, this);
+            mOwner.getLocationManager().requestLocationUpdates(mOwner.getProvider(), 0, 0, this);
             mCallbacks.add(callbackContext);
         } catch (SecurityException e) {
             Log.e(TAG, e.getLocalizedMessage());
             mOwner.getCallbackContext().error(e.getLocalizedMessage());
         }
+    }
+
+    public void stop(CallbackContext callbackContext) {
+        Log.d(TAG, "execute stop");
+        mOwner.getLocationManager().removeUpdates(this);
+        mOwner.win("stopped", callbackContext);
     }
 
     public void onLocationChanged(Location loc) {
