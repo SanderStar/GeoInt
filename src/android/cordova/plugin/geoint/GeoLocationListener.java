@@ -17,6 +17,8 @@ public class GeoLocationListener implements LocationListener {
 
     private GeoInt mOwner;
 
+    private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
+
     public static int POSITION_UNAVAILABLE = 2;
 
     public GeoLocationListener(GeoInt owner, String tag) {
@@ -24,10 +26,11 @@ public class GeoLocationListener implements LocationListener {
         this.TAG = tag;
     }
 
-    public void start() {
+    public void start(CallbackContext callbackContext) {
         try {
             Log.d(TAG, "requesting location updates");
             mOwner.getLocationManager().requestLocationUpdates(mOwner.getProvider(), 1000, 0, this);
+            mCallbacks.add(callbackContext);
         } catch (SecurityException e) {
             Log.e(TAG, e.getLocalizedMessage());
             mOwner.getCallbackContext().error(e.getLocalizedMessage());
@@ -45,7 +48,9 @@ public class GeoLocationListener implements LocationListener {
 
         Log.d(TAG, "JSON " + object.toString());
 
-        mOwner.getCallbackContext().success(object.toString());
+        for (CallbackContext callbackContext : mCallbacks) {
+            mOwner.win(object.toString(), callbackContext, false);
+        }
 
         Log.d(TAG, data);
     }

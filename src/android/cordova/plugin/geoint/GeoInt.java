@@ -11,6 +11,8 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PluginResult;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -101,6 +103,13 @@ public class GeoInt extends CordovaPlugin {
 
     public CallbackContext getCallbackContext() {
         return mCallbackContext;
+    }
+
+    public void win(String data, CallbackContext callbackContext, boolean keepCallback) {
+        PluginResult result = new PluginResult(PluginResult.Status.OK,
+                this.returnLocationJSON(loc));
+        result.setKeepCallback(keepCallback);
+        callbackContext.sendPluginResult(result);
     }
 
     private void coolMethod(String message) {
