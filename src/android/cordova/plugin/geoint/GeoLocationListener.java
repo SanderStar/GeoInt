@@ -50,7 +50,7 @@ public class GeoLocationListener implements LocationListener {
         Log.d(TAG, data);
 
         for (CallbackContext callbackContext : mCallbacks) {
-            mOwner.win(loc, callbackContext, false);
+            mOwner.win(loc, callbackContext, true);
         }
     }
 
