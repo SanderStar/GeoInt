@@ -1,7 +1,6 @@
 package cordova.plugin.geoint;
 
 import android.content.Context;
-import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
@@ -12,7 +11,6 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -67,7 +65,7 @@ public class GeoInt extends CordovaPlugin {
         return false;
     }
 
-    private GeoLocationListener getListener() {
+    private LocationListener getListener() {
         if (mLocationListener == null) {
             mLocationListener = new GeoLocationListener(this, TAG);
         }
