@@ -106,8 +106,7 @@ public class GeoInt extends CordovaPlugin {
     }
 
     public void win(String data, CallbackContext callbackContext, boolean keepCallback) {
-        PluginResult result = new PluginResult(PluginResult.Status.OK,
-                this.returnLocationJSON(loc));
+        PluginResult result = new PluginResult(PluginResult.Status.OK, data);
         result.setKeepCallback(keepCallback);
         callbackContext.sendPluginResult(result);
     }
