@@ -3,7 +3,7 @@ package cordova.plugin.geoint;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.LocationListener;
+import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 
@@ -12,9 +12,9 @@ import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
-
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -35,6 +35,7 @@ public class GeoInt extends CordovaPlugin {
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        Log.d(TAG, "execute initialize");
         super.initialize(cordova, webView);
         mLocationManager = (LocationManager) cordova.getActivity().getSystemService(Context.LOCATION_SERVICE);
     }
@@ -105,8 +106,8 @@ public class GeoInt extends CordovaPlugin {
         return mCallbackContext;
     }
 
-    public void win(String data, CallbackContext callbackContext, boolean keepCallback) {
-        PluginResult result = new PluginResult(PluginResult.Status.OK, data);
+    public void win(Location location, CallbackContext callbackContext, boolean keepCallback) {
+        PluginResult result = new PluginResult(PluginResult.Status.OK, convertLocation(location));
         result.setKeepCallback(keepCallback);
         callbackContext.sendPluginResult(result);
     }
@@ -151,6 +152,21 @@ public class GeoInt extends CordovaPlugin {
     private boolean hasPermission() {
         Log.d(TAG, "execute hasPermission");
         return cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
+    private JSONObject convertLocation(Location loc) {
+        Log.d(TAG, "execute convertLocation");
+        JSONObject object = new JSONObject();
+        try {
+            object.put("timestamp", loc.getTime());
+            object.put("latitude", loc.getLatitude());
+            object.put("longitude", loc.getLongitude());
+        } catch (JSONException e) {
+            // TODO exception handling
+            Log.e(TAG, e.getLocalizedMessage());
+            this.mCallbackContext.error(e.getLocalizedMessage());
+        }
+        return object;
     }
 
 

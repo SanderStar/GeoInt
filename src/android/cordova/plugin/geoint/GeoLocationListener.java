@@ -46,15 +46,12 @@ public class GeoLocationListener implements LocationListener {
                 + new Date(loc.getTime())
                 + " Lat: " + loc.getLatitude()
                 + " Lng: " + loc.getLongitude();
-        JSONObject object = convertLocation(loc);
-
-        Log.d(TAG, "JSON " + object.toString());
-
-        for (CallbackContext callbackContext : mCallbacks) {
-            mOwner.win(object.toString(), callbackContext, false);
-        }
 
         Log.d(TAG, data);
+
+        for (CallbackContext callbackContext : mCallbacks) {
+            mOwner.win(loc, callbackContext, false);
+        }
     }
 
     @Override
@@ -71,19 +68,6 @@ public class GeoLocationListener implements LocationListener {
         Log.d(TAG, "status changed");
     }
 
-    private JSONObject convertLocation(Location loc) {
-        Log.d(TAG, "execute convertLocation");
-        JSONObject object = new JSONObject();
-        try {
-            object.put("timestamp", loc.getTime());
-            object.put("latitude", loc.getLatitude());
-            object.put("longitude", loc.getLongitude());
-        } catch (JSONException e) {
-            // TODO exception handling
-            Log.e(TAG, e.getLocalizedMessage());
-            mOwner.getCallbackContext().error(e.getLocalizedMessage());
-        }
-        return object;
-    }
+
 
 }
