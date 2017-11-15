@@ -43,7 +43,7 @@ public class GeoLocationListener implements LocationListener {
                 + " Lng: " + loc.getLongitude();
         JSONObject object = convertLocation(loc);
 
-        mOwner.getCallbackContext.success(object.toString());
+        mOwner.getCallbackContext().success(object.toString());
 
         Log.d(TAG, data);
     }
