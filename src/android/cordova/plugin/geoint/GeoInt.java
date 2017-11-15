@@ -23,6 +23,7 @@ public class GeoInt extends CordovaPlugin {
 
     private GeoLocationListener mLocationListener;
     private LocationManager mLocationManager;
+    private CallbackContext mCallbackContext;
 
     private static final int GPS_POSITION  = 1;
 
@@ -41,6 +42,8 @@ public class GeoInt extends CordovaPlugin {
         // TODO test logcat error printing (system shell: adb logcat -s GEO)
         Log.e(TAG, "Execute action is " + action);
 
+        this.mCallbackContext = callbackContext;
+
         if (action == null || !action.matches("coolMethod|getLocation")) {
             // TODO set message
             return false;
@@ -48,13 +51,13 @@ public class GeoInt extends CordovaPlugin {
 
         if ("coolMethod".equals(action)) {
             String message = args.getString(0);
-            this.coolMethod(message, callbackContext);
+            this.coolMethod(message);
             return true;
         }
 
         if (!isGPSEnabled()) {
             // TODO translate
-            callbackContext.error("GPS not enabled on device");
+            this.mCallbackContext.error("GPS not enabled on device");
             return true;
         }
 
@@ -65,7 +68,7 @@ public class GeoInt extends CordovaPlugin {
                 requestPermission();
             } else {
                 Log.d(TAG, "permission");
-                getLocation(callbackContext);
+                getLocation();
             }
             return true;
         }
@@ -96,25 +99,24 @@ public class GeoInt extends CordovaPlugin {
         return mProvider;
     }
 
-    private void coolMethod(String message, CallbackContext callbackContext) {
+    private void coolMethod(String message) {
         Log.d(TAG, "execute coolMethod");
         if (message != null && message.length() > 0) {
-            callbackContext.success("Hello " + message);
+            this.mCallbackContext.success("Hello " + message);
         } else {
-            callbackContext.error("Expected one non-empty string argument.");
+            this.mCallbackContext.error("Expected one non-empty string argument.");
         }
     }
 
-    private void getLocation(CallbackContext callbackContext) {
+    private void getLocation() {
         Log.d(TAG, "execute getLocation");
-        getListener().start(callbackContext);
+        getListener().start(this.mCallbackContext);
     }
 
     private void requestPermission() {
         cordova.requestPermission(this, GPS_POSITION, Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
-    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case GPS_POSITION: {
@@ -122,7 +124,7 @@ public class GeoInt extends CordovaPlugin {
                 if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the related task you need to do.
                     Log.d(TAG, "permission grantend");
-                    getLocation(this.callbackContext);
+                    getLocation();
                 } else {
                     // permission denied, boo! Disable the functionality that depends on this permission.
                     Log.d(TAG, "permission denied");
