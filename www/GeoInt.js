@@ -8,6 +8,6 @@ exports.getLocation = function(success, error) {
     exec(success, error, 'GeoInt', 'getLocation');
 };
 
-exports.stopLocation = function(succes, error) {
+exports.stopLocation = function(success, error) {
     exec(success, error, 'GeoInt', 'stopLocation');
 }
