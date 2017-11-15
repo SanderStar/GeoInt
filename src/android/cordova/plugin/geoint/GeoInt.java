@@ -99,6 +99,10 @@ public class GeoInt extends CordovaPlugin {
         return mProvider;
     }
 
+    public CallbackContext getCallbackContext() {
+        return mCallbackContext;
+    }
+
     private void coolMethod(String message) {
         Log.d(TAG, "execute coolMethod");
         if (message != null && message.length() > 0) {
@@ -110,7 +114,7 @@ public class GeoInt extends CordovaPlugin {
 
     private void getLocation() {
         Log.d(TAG, "execute getLocation");
-        getListener().start(this.mCallbackContext);
+        getListener().start();
     }
 
     private void requestPermission() {

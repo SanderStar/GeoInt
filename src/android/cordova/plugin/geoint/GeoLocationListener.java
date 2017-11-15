@@ -24,22 +24,26 @@ public class GeoLocationListener implements LocationListener {
         this.TAG = tag;
     }
 
-    public void start(CallbackContext callbackContext) {
+    public void start() {
         try {
             Log.d(TAG, "requesting location updates");
             mOwner.getLocationManager().requestLocationUpdates(mOwner.getProvider(), 1000, 0, this);
         } catch (SecurityException e) {
             Log.e(TAG, e.getLocalizedMessage());
-            callbackContext.error(e.getLocalizedMessage());
+            mOwner.getCallbackContext().error(e.getLocalizedMessage());
         }
     }
 
     public void onLocationChanged(Location loc) {
+        Log.d(TAG, "execute onLocationChanged");
+
         String data = "Location changed: timestamp "
                 + new Date(loc.getTime())
                 + " Lat: " + loc.getLatitude()
                 + " Lng: " + loc.getLongitude();
         JSONObject object = convertLocation(loc);
+
+        mOwner.getCallbackContext.success(object.toString());
 
         Log.d(TAG, data);
     }
