@@ -19,7 +19,7 @@ public class GeoInt extends CordovaPlugin {
 
     public static final String TAG = "GEO";
 
-    private LocationListener mLocationListener;
+    private GeoLocationListener mLocationListener;
     private LocationManager mLocationManager;
 
 
@@ -31,7 +31,6 @@ public class GeoInt extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         mLocationManager = (LocationManager) cordova.getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocationListener = new GeoLocationListener(TAG);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class GeoInt extends CordovaPlugin {
         return false;
     }
 
-    private LocationListener getListener() {
+    private GeoLocationListener getListener() {
         if (mLocationListener == null) {
             mLocationListener = new GeoLocationListener(this, TAG);
         }
@@ -74,7 +73,7 @@ public class GeoInt extends CordovaPlugin {
 
     private boolean isGPSEnabled() {
         Log.d(TAG, "execute isGPSEnabled");
-        boolean isGPSEnabled = getLocationManager().isProviderEnabled(provider);
+        boolean isGPSEnabled = getLocationManager().isProviderEnabled(getProvider());
         Log.d(TAG, "GPS enabled " + isGPSEnabled);
         return isGPSEnabled;
     }
