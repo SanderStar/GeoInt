@@ -1,6 +1,8 @@
 package cordova.plugin.geoint;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
@@ -22,6 +24,7 @@ public class GeoInt extends CordovaPlugin {
     private GeoLocationListener mLocationListener;
     private LocationManager mLocationManager;
 
+    private static final int GPS_POSITION  = 1;
 
     // Network provider for low battery usage
     private String mProvider = LocationManager.NETWORK_PROVIDER;
@@ -56,7 +59,14 @@ public class GeoInt extends CordovaPlugin {
         }
 
         if ("getLocation".equals(action)) {
-            this.getLocation(callbackContext);
+            if (!hasPermission()) {
+                Log.d(TAG, "no permission -> request permission");
+                // TODO deinstalleer app om te testen
+                requestPermission();
+            } else {
+                Log.d(TAG, "permission");
+                getLocation(callbackContext);
+            }
             return true;
         }
 
@@ -98,6 +108,35 @@ public class GeoInt extends CordovaPlugin {
     private void getLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute getLocation");
         getListener().start(callbackContext);
+    }
+
+    private void requestPermission() {
+        cordova.requestPermission(this, GPS_POSITION, Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case GPS_POSITION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the related task you need to do.
+                    Log.d(TAG, "permission grantend");
+                    getLocation(this.callbackContext);
+                } else {
+                    // permission denied, boo! Disable the functionality that depends on this permission.
+                    Log.d(TAG, "permission denied");
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+    private boolean hasPermission() {
+        Log.d(TAG, "execute hasPermission");
+        return cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
 
