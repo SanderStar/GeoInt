@@ -3,6 +3,7 @@ package cordova.plugin.geoint;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
@@ -24,7 +25,9 @@ public class GeoInt extends CordovaPlugin {
     public static final String TAG = "GEO";
 
     private GeoLocationListener mLocationListener;
+    private GeoSensorListener mSensorListener;
     private LocationManager mLocationManager;
+    private SensorManager mSensorManager;
     private CallbackContext mCallbackContext;
 
     private static final int GPS_POSITION  = 1;
@@ -47,7 +50,7 @@ public class GeoInt extends CordovaPlugin {
 
         this.mCallbackContext = callbackContext;
 
-        if (action == null || !action.matches("coolMethod|getLocation|stopLocation")) {
+        if (action == null || !action.matches("coolMethod|getLocation|stopLocation|startSensor|stopSensor")) {
             // TODO set message
             return false;
         }
@@ -80,15 +83,27 @@ public class GeoInt extends CordovaPlugin {
             stopLocation(this.getCallbackContext());
         }
 
+        if ("startSensor".equals(action)) {
+            getSensorListener().start();
+        }
+        if ("stopSensor".equals(action)) {
+            getSensorListener().stop();
+        }
 
         return false;
     }
 
-    private GeoLocationListener getListener() {
+    private GeoLocationListener getLocationListener() {
         if (mLocationListener == null) {
             mLocationListener = new GeoLocationListener(this, TAG);
         }
         return mLocationListener;
+    }
+
+    private GeoSensorListener getSensorListener() {
+        if (mSensorListener == null) {
+            mSensorListener = new GeoSensorListener(this, TAG);
+        }
     }
 
     private boolean isGPSEnabled() {
@@ -101,6 +116,8 @@ public class GeoInt extends CordovaPlugin {
     public LocationManager getLocationManager() {
         return mLocationManager;
     }
+
+    public SensorManager getSensorManager() { return mSensorManager; }
 
     public String getProvider() {
         return mProvider;
@@ -133,12 +150,12 @@ public class GeoInt extends CordovaPlugin {
 
     private void getLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute getLocation");
-        getListener().start(callbackContext);
+        getLocationListener().start(callbackContext);
     }
 
     private void stopLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute stopLocation");
-        getListener().stop(callbackContext);
+        getLocationListener().stop(callbackContext);
     }
 
     private void requestPermission() {
