@@ -62,12 +62,12 @@ public class GeoSensorListener implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         // Controleer op sensor type
         if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
-            Log.d(TAG, "execute onSensorChanged");
-
             // Bepaal sensor data op vaste tijdstippen, anders overload aan data
             if (!mMustReadSensor) {
                 return;
             }
+            Log.d(TAG, "execute onSensorChanged");
+
             mMustReadSensor = false;
 
             StringBuffer data = new StringBuffer();
