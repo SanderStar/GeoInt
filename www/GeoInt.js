@@ -25,7 +25,7 @@ exports.watchCurrentSensor = function(success, error, options) {
 
   var id = utils.createUUID();
   timers[id] = window.setInterval(function () {
-    fusion.getCurrentSensorFusion(successCallback, errorCallback);
+    getCurrentSensor(successCallback, errorCallback);
   }, frequency);
 
   return id;
