@@ -19,7 +19,7 @@ exports.getCurrentSensor = function(success, error) {
     exec(success, error, 'GeoInt', 'getCurrentSensor');
 };
 
-exports.watchCurrentSensor = function(success, error) {
+exports.watchCurrentSensor = function(success, error, options) {
   // Default interval (100 msec)
   var frequency = (options !== undefined && options.frequency !== undefined) ? options.frequency : 100;
 
