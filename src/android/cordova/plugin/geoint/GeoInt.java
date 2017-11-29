@@ -41,6 +41,7 @@ public class GeoInt extends CordovaPlugin {
         Log.d(TAG, "execute initialize");
         super.initialize(cordova, webView);
         mLocationManager = (LocationManager) cordova.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mSensorManager = (SensorManager) cordova.getActivity().getSystemService(Context.SENSOR_SERVICE);
     }
 
     @Override
