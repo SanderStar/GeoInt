@@ -60,10 +60,9 @@ public class GeoSensorListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        Log.d(TAG, "execute onSensorChanged");
-
         // Controleer op sensor type
         if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
+            Log.d(TAG, "execute onSensorChanged");
 
             // Bepaal sensor data op vaste tijdstippen, anders overload aan data
             if (!mMustReadSensor) {
