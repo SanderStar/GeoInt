@@ -77,6 +77,7 @@ public class GeoSensorListener implements SensorEventListener {
             Log.d(TAG, "execute onSensorChanged");
 
             mMustReadSensor = false;
+            mData = sensorEvent.values;
 
             StringBuffer data = new StringBuffer();
             data.append("event data ").append(sensorEvent.timestamp).append(" accuracy ").append(sensorEvent.accuracy).append(" values ");
