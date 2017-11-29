@@ -6,9 +6,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import org.apache.cordova.CallbackContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +30,8 @@ public class GeoSensorListener implements SensorEventListener {
     boolean mMustReadSensor;
     private Timer mTimer = new Timer();
 
+    private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
+
     public GeoSensorListener(GeoInt owner, String tag) {
         this.mOwner = owner;
         this.TAG = tag;
@@ -40,16 +45,17 @@ public class GeoSensorListener implements SensorEventListener {
         }, 0, 1000);  // 1000 ms delay
     }
 
-    public void start() {
+    public void start(CallbackContext callbackContext) {
         Log.d(TAG, "exectue start (sensor event listener)");
+        mCallbacks.add(callbackContext);
         mOwner.getSensorManager().registerListener(this, this.mSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    public void stop() {
+    public void stop(CallbackContext callbackContext) {
         Log.d(TAG, "exectue stop (sensor event listener)");
         mOwner.getSensorManager().unregisterListener(this);
+        mOwner.win("stopped", callbackContext);
     }
-
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -71,8 +77,9 @@ public class GeoSensorListener implements SensorEventListener {
             }
             Log.d(TAG, data.toString());
 
-            // TODO
-            convert(sensorEvent.values);
+            for (CallbackContext callbackContext : mCallbacks) {
+                mOwner.win(sensorEvent.values, callbackContext, true);
+            }
 
             // @see https://stackoverflow.com/questions/38951860/how-to-use-the-numbers-from-game-rotation-vector-in-android
             final float rotation[] = new float[9];
@@ -92,17 +99,5 @@ public class GeoSensorListener implements SensorEventListener {
         Log.d(TAG, "execute onAccuracyChanged");
     }
 
-    private String convert(float[] data) {
-        JSONObject object = new JSONObject();
-        try {
-            object.put("x", data[0]);
-            object.put("y", data[1]);
-            object.put("z", data[2]);
-            object.put("w", data[3]);
-        } catch (JSONException e) {
-            // TODO exception handling
-            Log.e(TAG, e.getLocalizedMessage());
-        }
-        return object.toString();
-    }
+
 }

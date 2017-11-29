@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.telecom.Call;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -84,10 +85,10 @@ public class GeoInt extends CordovaPlugin {
         }
 
         if ("startSensor".equals(action)) {
-            getSensorListener().start();
+            startSensor(this.getCallbackContext());
         }
         if ("stopSensor".equals(action)) {
-            getSensorListener().stop();
+            stopSensor(this.getCallbackContext());
         }
 
         return false;
@@ -133,6 +134,12 @@ public class GeoInt extends CordovaPlugin {
         callbackContext.sendPluginResult(result);
     }
 
+    public void win(float[] values, CallbackContext callbackContext, boolean keepCallback) {
+        PluginResult result = new PluginResult(PluginResult.Status.OK, convertSensor(values));
+        result.setKeepCallback(keepCallback);
+        callbackContext.sendPluginResult(result);
+    }
+
     public void win(String data, CallbackContext callbackContext) {
         PluginResult result = new PluginResult(PluginResult.Status.OK, data);
         result.setKeepCallback(false);
@@ -156,6 +163,16 @@ public class GeoInt extends CordovaPlugin {
     private void stopLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute stopLocation");
         getLocationListener().stop(callbackContext);
+    }
+
+    private void startSensor(CallbackContext callbackContext) {
+        Log.d(TAG, "execute startSensor");
+        getSensorListener().start(callbackContext);
+    }
+
+    private void stopSensor(CallbackContext callbackContext) {
+        Log.d(TAG, "execute stopSensor");
+        getSensorListener().stop(callbackContext);
     }
 
     private void requestPermission() {
@@ -201,5 +218,18 @@ public class GeoInt extends CordovaPlugin {
         return object.toString();
     }
 
+    private String convertSensor(float[] data) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("x", data[0]);
+            object.put("y", data[1]);
+            object.put("z", data[2]);
+            object.put("w", data[3]);
+        } catch (JSONException e) {
+            // TODO exception handling
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+        return object.toString();
+    }
 
 }
