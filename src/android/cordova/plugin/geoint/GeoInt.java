@@ -130,12 +130,14 @@ public class GeoInt extends CordovaPlugin {
     }
 
     public void win(Location location, CallbackContext callbackContext, boolean keepCallback) {
+        Log.d(TAG, "win with location");
         PluginResult result = new PluginResult(PluginResult.Status.OK, convertLocation(location));
         result.setKeepCallback(keepCallback);
         callbackContext.sendPluginResult(result);
     }
 
     public void win(float[] values, CallbackContext callbackContext, boolean keepCallback) {
+        Log.d(TAG, "win with float");
         PluginResult result = new PluginResult(PluginResult.Status.OK, convertSensor(values));
         result.setKeepCallback(keepCallback);
         callbackContext.sendPluginResult(result);
@@ -220,6 +222,7 @@ public class GeoInt extends CordovaPlugin {
     }
 
     private String convertSensor(float[] data) {
+        Log.d(TAG, "execute convertSensor");
         JSONObject object = new JSONObject();
         try {
             object.put("x", data[0]);
