@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.telecom.Call;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -105,6 +104,7 @@ public class GeoInt extends CordovaPlugin {
         if (mSensorListener == null) {
             mSensorListener = new GeoSensorListener(this, TAG);
         }
+        return mSensorListener;
     }
 
     private boolean isGPSEnabled() {
