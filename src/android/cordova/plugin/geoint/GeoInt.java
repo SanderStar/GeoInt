@@ -51,7 +51,7 @@ public class GeoInt extends CordovaPlugin {
 
         this.mCallbackContext = callbackContext;
 
-        if (action == null || !action.matches("coolMethod|getLocation|stopLocation|startSensor|stopSensor")) {
+        if (action == null || !action.matches("coolMethod|getLocation|stopLocation|startSensor|stopSensor|getCurrentSensor")) {
             // TODO set message
             return false;
         }
@@ -84,6 +84,10 @@ public class GeoInt extends CordovaPlugin {
             stopLocation(this.getCallbackContext());
         }
 
+        if ("getCurrentSensor".equals(action)) {
+            getCurrentSensor(this.getCallbackContext());
+        }
+
         if ("startSensor".equals(action)) {
             startSensor(this.getCallbackContext());
         }
@@ -93,6 +97,8 @@ public class GeoInt extends CordovaPlugin {
 
         return false;
     }
+
+
 
     private GeoLocationListener getLocationListener() {
         if (mLocationListener == null) {
@@ -161,6 +167,11 @@ public class GeoInt extends CordovaPlugin {
     private void getLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute getLocation");
         getLocationListener().start(callbackContext);
+    }
+
+    private void getCurrentSensor(CallbackContext callbackContext) {
+        Log.d(TAG, "execute getCurrentSensor");
+        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, convertSensor(getSensorListener().getData())));
     }
 
     private void stopLocation(CallbackContext callbackContext) {
