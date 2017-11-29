@@ -10,12 +10,12 @@ exports.getLocation = function(success, error) {
 
 exports.stopLocation = function(success, error) {
     exec(success, error, 'GeoInt', 'stopLocation');
-}
+};
 
 exports.startSensor = function(success, error) {
     exec(success, error, 'GeoInt', 'startSensor');
-}
+};
 
 exports.stopSensor = function(success, error) {
     exec(success, error, 'GeoInt', 'stopSensor');
-}
+};
