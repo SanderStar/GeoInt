@@ -1,49 +1,56 @@
 var exec = require('cordova/exec'),
     utils = require('cordova/utils'),
     argscheck = require('cordova/argscheck'),
-    timers = {};
+    timers = {},
 
-exports.coolMethod = function(arg0, success, error) {
-    exec(success, error, 'GeoInt', 'coolMethod', [arg0]);
-};
+sensor = {
 
-exports.getLocation = function(success, error) {
-    exec(success, error, 'GeoInt', 'getLocation');
-};
+  coolMethod: function(args, success, error) {
+     exec(success, error, "GeoInt", "coolMethod", [args]);
+  },
 
-exports.stopLocation = function(success, error) {
-    exec(success, error, 'GeoInt', 'stopLocation');
-};
+  getLocation: function(success, error) {
+     exec(success, error, "GeoInt", "getLocation");
+  },
 
-exports.getCurrentSensor = function(success, error) {
-    exec(success, error, 'GeoInt', 'getCurrentSensor');
-};
+  stopLocation: function(success, error) {
+     exec(success, error, "GeoInt", "stopLocation");
+  },
 
-exports.watchCurrentSensor = function(success, error, options) {
-  // Default interval (100 msec)
-  var frequency = (options !== undefined && options.frequency !== undefined) ? options.frequency : 100;
+  getCurrentSensor: function(success, error) {
+     exec(success, error, "GeoInt", "getCurrentSensor");
+  },
 
-  var that = this;
-  var id = utils.createUUID();
-  timers[id] = window.setInterval(function () {
-    that.getCurrentSensor(success, error);
-  }, frequency);
+  watchCurrentSensor: function(success, error, options) {
+    // Default interval (100 msec)
+    var frequency = (options !== undefined && options.frequency !== undefined) ? options.frequency : 100;
 
-  return id;
-};
+    var id = utils.createUUID();
+    timers[id] = window.setInterval(function () {
+      sensor.getCurrentSensor(success, error);
+    }, frequency);
 
-exports.clearWatch = function(id) {
-  // Stop javascript timer & remove from timer list
-  if (id && timers[id]) {
-    clearInterval(timers[id]);
-    delete timers[id];
+    return id;
+  },
+
+  clearWatch: function(id) {
+    // Stop javascript timer & remove from timer list
+    if (id && timers[id]) {
+      clearInterval(timers[id]);
+      delete timers[id];
+    }
+  },
+
+  startSensor: function(success, error) {
+      exec(success, error, "GeoInt", "startSensor");
+  },
+
+  stopSensor = function(success, error) {
+      exec(success, error, "GeoInt", "stopSensor");
   }
+
 };
 
-exports.startSensor = function(success, error) {
-    exec(success, error, 'GeoInt', 'startSensor');
-};
+module.exports = sensor;
 
-exports.stopSensor = function(success, error) {
-    exec(success, error, 'GeoInt', 'stopSensor');
-};
+
