@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="cordova">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../cordova" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../cordova" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../cordova" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../cordova" recursive="false" type="SOURCES" />
+  </library>
+</component>
