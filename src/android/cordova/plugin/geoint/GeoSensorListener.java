@@ -21,6 +21,12 @@ import java.util.TimerTask;
 
 public class GeoSensorListener implements SensorEventListener {
 
+    /**
+     * Sync-token for syncing read/write to sensor-data from sensor manager and
+     * fusion algorithm
+     */
+    protected final Object syncToken = new Object();
+
     private static String TAG;
 
     private GeoInt mOwner;
@@ -31,6 +37,8 @@ public class GeoSensorListener implements SensorEventListener {
     private Timer mTimer = new Timer();
 
     private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
+
+    private float[] mData;
 
     public GeoSensorListener(GeoInt owner, String tag) {
         Log.d(TAG, "constructor GeoSensorListener");
@@ -100,4 +108,9 @@ public class GeoSensorListener implements SensorEventListener {
     }
 
 
+    public float[] getData() {
+        synchronized (syncToken) {
+            return mData;
+        }
+    }
 }
