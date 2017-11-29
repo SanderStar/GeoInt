@@ -33,6 +33,7 @@ public class GeoSensorListener implements SensorEventListener {
     private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
 
     public GeoSensorListener(GeoInt owner, String tag) {
+        Log.d(TAG, "constructor GeoSensorListener");
         this.mOwner = owner;
         this.TAG = tag;
         mSensor = mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
