@@ -62,13 +62,13 @@ public class GeoInt extends CordovaPlugin {
             return true;
         }
 
-        if (!isGPSEnabled()) {
-            // TODO translate
-            this.mCallbackContext.error("GPS not enabled on device");
-            return true;
-        }
-
         if ("getLocation".equals(action)) {
+            if (!isGPSEnabled()) {
+                // TODO translate
+                this.mCallbackContext.error("GPS not enabled on device");
+                return true;
+            }
+
             if (!hasPermission()) {
                 Log.d(TAG, "no permission -> request permission");
                 // TODO deinstalleer app om te testen
