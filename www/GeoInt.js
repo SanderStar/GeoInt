@@ -25,7 +25,7 @@ exports.watchCurrentSensor = function(success, error, options) {
 
   var id = utils.createUUID();
   timers[id] = window.setInterval(function () {
-    getCurrentSensor(successCallback, errorCallback);
+    getCurrentSensor(success, error);
   }, frequency);
 
   return id;
