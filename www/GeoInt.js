@@ -23,9 +23,10 @@ exports.watchCurrentSensor = function(success, error, options) {
   // Default interval (100 msec)
   var frequency = (options !== undefined && options.frequency !== undefined) ? options.frequency : 100;
 
+  var that = this;
   var id = utils.createUUID();
   timers[id] = window.setInterval(function () {
-    getCurrentSensor(success, error);
+    that.getCurrentSensor(success, error);
   }, frequency);
 
   return id;
