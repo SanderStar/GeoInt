@@ -79,8 +79,6 @@ public class GeoSensorListener implements SensorEventListener {
         Log.d(TAG, "exectue start (sensor event listener)");
         mCallbacks.add(callbackContext);
         for (Sensor sensor : sensorList) {
-            // enable our sensors when the activity is resumed, ask for
-            // 20 ms updates (Sensor_delay_game)
             mOwner.getSensorManager().registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
