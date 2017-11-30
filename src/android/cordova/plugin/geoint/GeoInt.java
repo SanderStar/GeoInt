@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cordova.plugin.geoint.domain.SensorItem;
+
 /**
  * This class echoes a string called from JavaScript.
  */
@@ -237,16 +239,24 @@ public class GeoInt extends CordovaPlugin {
         Log.d(TAG, "execute convertSensor");
         JSONObject object = new JSONObject();
         try {
-            if (sensorItem != null && sensorItem.getValues().length >= 4) {
-                object.put("timestamp", sensorItem.getTimestamp());
+            if (sensorItem != null && sensorItem.getOrientation() != null && sensorItem.getOrientation().getValues().length == 4) {
+                object.put("timestamp",  sensorItem.getOrientation().getTimestamp());
 
-                object.put("x", sensorItem.getValues()[0]);
-                object.put("y", sensorItem.getValues()[1]);
-                object.put("z", sensorItem.getValues()[2]);
-                object.put("w", sensorItem.getValues()[3]);
-            } else {
-                Log.d(TAG,"no sensor data available");
+                object.put("q_x",  sensorItem.getOrientation().getValues()[0]);
+                object.put("q_y",  sensorItem.getOrientation().getValues()[1]);
+                object.put("q_z",  sensorItem.getOrientation().getValues()[2]);
+                object.put("q_w",  sensorItem.getOrientation().getValues()[3]);
             }
+            if (sensorItem != null && sensorItem.getAccelerometer() != null && sensorItem.getAccelerometer().getValues().length == 3) {
+                object.put("acc_user_x",  sensorItem.getOrientation().getValues()[0]);
+                object.put("acc_user_y",  sensorItem.getOrientation().getValues()[1]);
+                object.put("acc_user_z",  sensorItem.getOrientation().getValues()[2]);
+            }
+
+            if (object.length() == 0) {
+                Log.d(TAG, "No sensor data available");
+            }
+
         } catch (JSONException e) {
             // TODO exception handling
             Log.e(TAG, e.getLocalizedMessage());

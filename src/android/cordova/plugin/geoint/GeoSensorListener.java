@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cordova.plugin.geoint.domain.Orientation;
+import cordova.plugin.geoint.domain.SensorItem;
+
 /**
  * Created by Sander on 29-11-2017.
  */
@@ -24,6 +27,21 @@ public class GeoSensorListener implements SensorEventListener {
      * fusion algorithm
      */
     protected final Object syncToken = new Object();
+
+    /**
+     * Accelerometer values
+     */
+    private float[] accelerometerValues = new float[3];
+
+    /**
+     * Rotation values
+     */
+    private float[] rotationValues = new float[4];
+
+    /**
+     * Sensor timestamp
+     */
+    private long timestamp;
 
     private static String TAG;
 
@@ -39,7 +57,7 @@ public class GeoSensorListener implements SensorEventListener {
 
     private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
 
-    private SensorItem mSensorItem;
+    private SensorItem mSensorItem = new SensorItem();
 
     public GeoSensorListener(GeoInt owner, String tag) {
         Log.d(TAG, "constructor GeoSensorListener");
@@ -87,10 +105,18 @@ public class GeoSensorListener implements SensorEventListener {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             Log.d(TAG, "execute onSensorChanged TYPE_ACCELEROMETER");
 
+            timestamp = sensorEvent.timestamp;
+            accelerometerValues = sensorEvent.values.clone();
+
+            mSensorItem.setOrientation(new Orientation(accelerometerValues, timestamp));
+
         }  else if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
             Log.d(TAG, "execute onSensorChanged TYPE_GAME_ROTATION_VECTOR");
 
-            mSensorItem = new SensorItem(sensorEvent);
+            timestamp = sensorEvent.timestamp;
+            rotationValues = sensorEvent.values.clone();
+
+            mSensorItem.setOrientation(new Orientation(rotationValues, timestamp));
 
             StringBuffer data = new StringBuffer();
             data.append("event data ").append(sensorEvent.timestamp).append(" accuracy ").append(sensorEvent.accuracy).append(" values ");
