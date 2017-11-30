@@ -10,8 +10,6 @@ import org.apache.cordova.CallbackContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cordova.plugin.geoint.domain.Accelerometer;
 import cordova.plugin.geoint.domain.Orientation;
@@ -53,9 +51,6 @@ public class GeoSensorListener implements SensorEventListener {
      */
     protected List<Sensor> sensorList = new ArrayList<Sensor>();
 
-    boolean mMustReadSensor;
-    private Timer mTimer = new Timer();
-
     private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
 
     private SensorItem mSensorItem = new SensorItem();
@@ -66,20 +61,13 @@ public class GeoSensorListener implements SensorEventListener {
         this.TAG = tag;
         sensorList.add(mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
         sensorList.add(mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR));
-        // Vertraag collectie van sensor data
-        mTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                mMustReadSensor = true;
-            }
-        }, 0, 10);  // 1000 ms delay
     }
 
     public void start(CallbackContext callbackContext) {
         Log.d(TAG, "exectue start (sensor event listener)");
         mCallbacks.add(callbackContext);
         for (Sensor sensor : sensorList) {
-            mOwner.getSensorManager().registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+            mOwner.getSensorManager().registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST);
         }
     }
 
@@ -94,12 +82,6 @@ public class GeoSensorListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        // TODO Bepaal sensor data op vaste tijdstippen, anders overload aan data. Ook sturing vanuit ui mogelijk.
-        if (!mMustReadSensor) {
-            return;
-        }
-        mMustReadSensor = false;
-
         // Controleer op sensor type
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             Log.d(TAG, "execute onSensorChanged TYPE_ACCELEROMETER");
