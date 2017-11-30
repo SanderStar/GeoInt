@@ -72,7 +72,7 @@ public class GeoSensorListener implements SensorEventListener {
             public void run() {
                 mMustReadSensor = true;
             }
-        }, 0, 1000);  // 1000 ms delay
+        }, 0, 10);  // 1000 ms delay
     }
 
     public void start(CallbackContext callbackContext) {
