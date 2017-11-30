@@ -231,15 +231,17 @@ public class GeoInt extends CordovaPlugin {
         return object.toString();
     }
 
-    private String convertSensor(float[] data) {
+    private String convertSensor(SensorItem sensorItem) {
         Log.d(TAG, "execute convertSensor");
         JSONObject object = new JSONObject();
         try {
-            if (data != null && data.length >= 4) {
-                object.put("x", data[0]);
-                object.put("y", data[1]);
-                object.put("z", data[2]);
-                object.put("w", data[3]);
+            if (sensorItem != null && sensorItem.getValues().length >= 4) {
+                object.put("timestamp", sensorItem.getTimestamp());
+
+                object.put("x", sensorItem.getValues()[0]);
+                object.put("y", sensorItem.getValues()[1]);
+                object.put("z", sensorItem.getValues()[2]);
+                object.put("w", sensorItem.getValues()[3]);
             } else {
                 Log.d(TAG,"no sensor data available");
             }

@@ -7,8 +7,6 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class GeoSensorListener implements SensorEventListener {
 
     private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
 
-    private float[] mData;
+    private SensorItem mSensorItem;
 
     public GeoSensorListener(GeoInt owner, String tag) {
         Log.d(TAG, "constructor GeoSensorListener");
@@ -63,6 +61,7 @@ public class GeoSensorListener implements SensorEventListener {
     public void stop(CallbackContext callbackContext) {
         Log.d(TAG, "exectue stop (sensor event listener)");
         mOwner.getSensorManager().unregisterListener(this);
+        // TODO return result with json
         mOwner.win("stopped", callbackContext);
     }
 
@@ -77,7 +76,7 @@ public class GeoSensorListener implements SensorEventListener {
             Log.d(TAG, "execute onSensorChanged");
 
             mMustReadSensor = false;
-            mData = sensorEvent.values;
+            mSensorItem = new SensorItem(sensorEvent);
 
             StringBuffer data = new StringBuffer();
             data.append("event data ").append(sensorEvent.timestamp).append(" accuracy ").append(sensorEvent.accuracy).append(" values ");
@@ -109,9 +108,9 @@ public class GeoSensorListener implements SensorEventListener {
     }
 
 
-    public float[] getData() {
+    public SensorItem getData() {
         synchronized (syncToken) {
-            return mData;
+            return mSensorItem;
         }
     }
 }
