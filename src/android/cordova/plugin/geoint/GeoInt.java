@@ -185,6 +185,8 @@ public class GeoInt extends CordovaPlugin {
     private void stopSensor(CallbackContext callbackContext) {
         Log.d(TAG, "execute stopSensor");
         getSensorListener().stop(callbackContext);
+        // TODO make restart possible
+        mSensorListener = null;
         callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
     }
 
