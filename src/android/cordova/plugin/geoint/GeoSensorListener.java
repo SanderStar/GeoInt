@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cordova.plugin.geoint.domain.Accelerometer;
 import cordova.plugin.geoint.domain.Orientation;
 import cordova.plugin.geoint.domain.SensorItem;
 
@@ -108,7 +109,7 @@ public class GeoSensorListener implements SensorEventListener {
             timestamp = sensorEvent.timestamp;
             accelerometerValues = sensorEvent.values.clone();
 
-            mSensorItem.setOrientation(new Orientation(accelerometerValues, timestamp));
+            mSensorItem.setAccelerometer(new Accelerometer(accelerometerValues, timestamp));
 
         }  else if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
             Log.d(TAG, "execute onSensorChanged TYPE_GAME_ROTATION_VECTOR");
