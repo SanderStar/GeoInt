@@ -54,15 +54,11 @@ public class GeoInt extends CordovaPlugin {
         if (action == null || !action.matches("coolMethod|getLocation|stopLocation|startSensor|stopSensor|getCurrentSensor")) {
             // TODO set message
             return false;
-        }
-
-        if ("coolMethod".equals(action)) {
+        } else if ("coolMethod".equals(action)) {
             String message = args.getString(0);
             this.coolMethod(message);
             return true;
-        }
-
-        if ("getLocation".equals(action)) {
+        } else if ("getLocation".equals(action)) {
             if (!isGPSEnabled()) {
                 // TODO translate
                 this.mCallbackContext.error("GPS not enabled on device");
@@ -78,21 +74,18 @@ public class GeoInt extends CordovaPlugin {
                 getLocation(this.getCallbackContext());
             }
             return true;
-        }
-
-        if ("stopLocation".equals(action)) {
+        } else if ("stopLocation".equals(action)) {
             stopLocation(this.getCallbackContext());
-        }
-
-        if ("getCurrentSensor".equals(action)) {
+            return true;
+        } else if ("getCurrentSensor".equals(action)) {
             getCurrentSensor(this.getCallbackContext());
-        }
-
-        if ("startSensor".equals(action)) {
+            return true;
+        } else if ("startSensor".equals(action)) {
             startSensor(this.getCallbackContext());
-        }
-        if ("stopSensor".equals(action)) {
+            return true;
+        } else if ("stopSensor".equals(action)) {
             stopSensor(this.getCallbackContext());
+            return true;
         }
 
         return false;
@@ -171,6 +164,10 @@ public class GeoInt extends CordovaPlugin {
 
     private void getCurrentSensor(CallbackContext callbackContext) {
         Log.d(TAG, "execute getCurrentSensor");
+        // TODO improve (duplicatie with startSensor)
+        if (mSensorListener == null) {
+            getSensorListener().start(callbackContext);
+        }
         callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, convertSensor(getSensorListener().getData())));
     }
 
