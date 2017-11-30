@@ -86,7 +86,7 @@ public class GeoSensorListener implements SensorEventListener {
             Log.d(TAG, data.toString());
 
             for (CallbackContext callbackContext : mCallbacks) {
-                mOwner.win(sensorEvent.values, callbackContext, true);
+                mOwner.win(mSensorItem, callbackContext, true);
             }
 
             // @see https://stackoverflow.com/questions/38951860/how-to-use-the-numbers-from-game-rotation-vector-in-android

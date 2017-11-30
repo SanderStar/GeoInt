@@ -135,9 +135,9 @@ public class GeoInt extends CordovaPlugin {
         callbackContext.sendPluginResult(result);
     }
 
-    public void win(float[] values, CallbackContext callbackContext, boolean keepCallback) {
+    public void win(SensorItem sensorItem, CallbackContext callbackContext, boolean keepCallback) {
         Log.d(TAG, "win with float");
-        PluginResult result = new PluginResult(PluginResult.Status.OK, convertSensor(values));
+        PluginResult result = new PluginResult(PluginResult.Status.OK, convertSensor(sensorItem));
         result.setKeepCallback(keepCallback);
         callbackContext.sendPluginResult(result);
     }
