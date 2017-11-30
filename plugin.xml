@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plugin id="cordova-plugin-geo-int" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-	<name>sensor</name>
-	<js-module name="GeoInt" src="www/GeoInt.js">
+	<name>GeoInt</name>
+	<js-module name="sensor" src="www/geoint.js">
 		<clobbers target="navigation.sensor" />
 	</js-module>
 	<platform name="android">
