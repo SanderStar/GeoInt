@@ -29,7 +29,10 @@ public class GeoSensorListener implements SensorEventListener {
 
     private GeoInt mOwner;
 
-    private Sensor mSensor;
+    /**
+     * The list of sensors used by this provider
+     */
+    protected List<Sensor> sensorList = new ArrayList<Sensor>();
 
     boolean mMustReadSensor;
     private Timer mTimer = new Timer();
@@ -42,7 +45,8 @@ public class GeoSensorListener implements SensorEventListener {
         Log.d(TAG, "constructor GeoSensorListener");
         this.mOwner = owner;
         this.TAG = tag;
-        mSensor = mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
+        sensorList.add(mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+        sensorList.add(mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR));
         // Vertraag collectie van sensor data
         mTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -55,27 +59,37 @@ public class GeoSensorListener implements SensorEventListener {
     public void start(CallbackContext callbackContext) {
         Log.d(TAG, "exectue start (sensor event listener)");
         mCallbacks.add(callbackContext);
-        mOwner.getSensorManager().registerListener(this, this.mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        for (Sensor sensor : sensorList) {
+            // enable our sensors when the activity is resumed, ask for
+            // 20 ms updates (Sensor_delay_game)
+            mOwner.getSensorManager().registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     public void stop(CallbackContext callbackContext) {
         Log.d(TAG, "exectue stop (sensor event listener)");
-        mOwner.getSensorManager().unregisterListener(this);
+        for (Sensor sensor : sensorList) {
+            mOwner.getSensorManager().unregisterListener(this, sensor);
+        }
         // TODO return result with json
         mOwner.win("stopped", callbackContext);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        // Controleer op sensor type
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
-            // Bepaal sensor data op vaste tijdstippen, anders overload aan data
-            if (!mMustReadSensor) {
-                return;
-            }
-            Log.d(TAG, "execute onSensorChanged");
+        // TODO Bepaal sensor data op vaste tijdstippen, anders overload aan data. Ook sturing vanuit ui mogelijk.
+        if (!mMustReadSensor) {
+            return;
+        }
+        mMustReadSensor = false;
 
-            mMustReadSensor = false;
+        // Controleer op sensor type
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            Log.d(TAG, "execute onSensorChanged TYPE_ACCELEROMETER");
+
+        }  else if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
+            Log.d(TAG, "execute onSensorChanged TYPE_GAME_ROTATION_VECTOR");
+
             mSensorItem = new SensorItem(sensorEvent);
 
             StringBuffer data = new StringBuffer();
