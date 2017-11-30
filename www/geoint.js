@@ -45,7 +45,7 @@ sensor = {
       exec(success, error, "GeoInt", "startSensor");
   },
 
-  stopSensor = function(success, error) {
+  stopSensor: function(success, error) {
       exec(success, error, "GeoInt", "stopSensor");
   }
 
