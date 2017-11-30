@@ -238,10 +238,14 @@ public class GeoInt extends CordovaPlugin {
         Log.d(TAG, "execute convertSensor");
         JSONObject object = new JSONObject();
         try {
-            object.put("x", data[0]);
-            object.put("y", data[1]);
-            object.put("z", data[2]);
-            object.put("w", data[3]);
+            if (data != null && data.length >= 4) {
+                object.put("x", data[0]);
+                object.put("y", data[1]);
+                object.put("z", data[2]);
+                object.put("w", data[3]);
+            } else {
+                Log.d(TAG,"no sensor data available");
+            }
         } catch (JSONException e) {
             // TODO exception handling
             Log.e(TAG, e.getLocalizedMessage());
