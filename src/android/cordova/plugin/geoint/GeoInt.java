@@ -248,9 +248,9 @@ public class GeoInt extends CordovaPlugin {
                 object.put("q_w",  sensorItem.getOrientation().getValues()[3]);
             }
             if (sensorItem != null && sensorItem.getAccelerometer() != null && sensorItem.getAccelerometer().getValues().length == 3) {
-                object.put("acc_user_x",  sensorItem.getOrientation().getValues()[0]);
-                object.put("acc_user_y",  sensorItem.getOrientation().getValues()[1]);
-                object.put("acc_user_z",  sensorItem.getOrientation().getValues()[2]);
+                object.put("acc_user_x",  sensorItem.getAccelerometer().getValues()[0]);
+                object.put("acc_user_y",  sensorItem.getAccelerometer().getValues()[1]);
+                object.put("acc_user_z",  sensorItem.getAccelerometer().getValues()[2]);
             }
 
             if (object.length() == 0) {
