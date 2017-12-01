@@ -45,6 +45,7 @@ function startSensor() {
       // Timer interval 1000 milliseconds
       var options = { frequency: 1000 };
 
+      // Fired at defined interval (see options)
       var success = function(message) {
         // Data is returned in JSON
         alert(message);
