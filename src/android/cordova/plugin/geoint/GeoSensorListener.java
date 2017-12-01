@@ -84,7 +84,7 @@ public class GeoSensorListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         // Controleer op sensor type
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             Log.d(TAG, "execute onSensorChanged TYPE_LINEAR_ACCELERATION");
 
             synchronized (syncToken) {
