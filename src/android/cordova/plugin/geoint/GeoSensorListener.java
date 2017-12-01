@@ -21,6 +21,7 @@ import cordova.plugin.geoint.domain.SensorItem;
 
 public class GeoSensorListener implements SensorEventListener {
 
+    // TODO synchronisatie echt nodig?!
     /**
      * Sync-token for syncing read/write to sensor-data from sensor manager and
      * fusion algorithm
@@ -86,25 +87,26 @@ public class GeoSensorListener implements SensorEventListener {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             Log.d(TAG, "execute onSensorChanged TYPE_LINEAR_ACCELERATION");
 
-            timestamp = sensorEvent.timestamp;
-            accelerometerValues = sensorEvent.values.clone();
+            synchronized (syncToken) {
+                timestamp = sensorEvent.timestamp;
+                accelerometerValues = sensorEvent.values.clone();
+            }
 
             mSensorItem.setAccelerometer(new Accelerometer(accelerometerValues, timestamp));
+
+            logData(sensorEvent.sensor.getName(), sensorEvent);
 
         }  else if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
             Log.d(TAG, "execute onSensorChanged TYPE_GAME_ROTATION_VECTOR");
 
-            timestamp = sensorEvent.timestamp;
-            rotationValues = sensorEvent.values.clone();
+            synchronized (syncToken) {
+                timestamp = sensorEvent.timestamp;
+                rotationValues = sensorEvent.values.clone();
+            }
 
             mSensorItem.setOrientation(new Orientation(rotationValues, timestamp));
 
-            StringBuffer data = new StringBuffer();
-            data.append("event data ").append(sensorEvent.timestamp).append(" accuracy ").append(sensorEvent.accuracy).append(" values ");
-            for (int i = 0; i < sensorEvent.values.length; i++) {
-                data.append(i).append(" ").append(sensorEvent.values[i]);
-            }
-            Log.d(TAG, data.toString());
+            logData(sensorEvent.sensor.getName(), sensorEvent);
 
             for (CallbackContext callbackContext : mCallbacks) {
                 mOwner.win(mSensorItem, callbackContext, true);
@@ -116,6 +118,15 @@ public class GeoSensorListener implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
         Log.d(TAG, "execute onAccuracyChanged");
+    }
+
+    private void logData(String type, SensorEvent sensorEvent) {
+        StringBuffer data = new StringBuffer();
+        data.append(type).append(" event data ").append(sensorEvent.timestamp).append(" accuracy ").append(sensorEvent.accuracy).append(" values ");
+        for (int i = 0; i < sensorEvent.values.length; i++) {
+            data.append(i).append(" ").append(sensorEvent.values[i]);
+        }
+        Log.d(TAG, data.toString());
     }
 
 
