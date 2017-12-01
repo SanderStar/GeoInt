@@ -17,8 +17,10 @@ Verwijderen van de plugin uit het project:
 cordova plugin rm https://github.com/SanderStar/GeoInt.git
 ```
 
+###Aanroepen van de code (API):
+
+
 ##### Dummy aanroep Helloworld
-Aanroepen van de code (API):
 ```javascript
 var success = function(message) {
     alert(message);
