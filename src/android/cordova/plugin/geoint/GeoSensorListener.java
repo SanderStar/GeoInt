@@ -83,8 +83,8 @@ public class GeoSensorListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         // Controleer op sensor type
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            Log.d(TAG, "execute onSensorChanged TYPE_ACCELEROMETER");
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            Log.d(TAG, "execute onSensorChanged TYPE_LINEAR_ACCELERATION");
 
             timestamp = sensorEvent.timestamp;
             accelerometerValues = sensorEvent.values.clone();
@@ -109,16 +109,6 @@ public class GeoSensorListener implements SensorEventListener {
             for (CallbackContext callbackContext : mCallbacks) {
                 mOwner.win(mSensorItem, callbackContext, true);
             }
-
-            // @see https://stackoverflow.com/questions/38951860/how-to-use-the-numbers-from-game-rotation-vector-in-android
-            final float rotation[] = new float[9];
-            data = new StringBuffer();
-            SensorManager.getRotationMatrixFromVector(rotation, sensorEvent.values);
-            data.append("rotation elements ");
-            for (int i = 0; i < rotation.length; i++) {
-                data.append(i).append(" ").append(rotation[i]);
-            }
-            Log.d(TAG, data.toString());
         }
 
     }

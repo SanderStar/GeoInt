@@ -20,7 +20,9 @@ import org.json.JSONObject;
 import cordova.plugin.geoint.domain.SensorItem;
 
 /**
- * This class echoes a string called from JavaScript.
+ * Main class for collecting sensor data.
+ *
+ * @see https://developers.google.com/web/updates/2017/09/sensors-for-the-web
  */
 public class GeoInt extends CordovaPlugin {
 
