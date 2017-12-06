@@ -47,6 +47,9 @@ public class GeoSensorListener implements SensorEventListener {
 
     private GeoInt mOwner;
 
+    private static final int TYPE_ACCELEROMETER = Sensor.TYPE_LINEAR_ACCELERATION;
+    private static final int TYPE_ORIENTATION = Sensor.TYPE_GAME_ROTATION_VECTOR;
+
     /**
      * The list of sensors used by this provider
      */
@@ -60,8 +63,8 @@ public class GeoSensorListener implements SensorEventListener {
         Log.d(TAG, "constructor GeoSensorListener");
         this.mOwner = owner;
         this.TAG = tag;
-        sensorList.add(mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
-        sensorList.add(mOwner.getSensorManager().getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR));
+        sensorList.add(mOwner.getSensorManager().getDefaultSensor(TYPE_ACCELEROMETER));
+        sensorList.add(mOwner.getSensorManager().getDefaultSensor(TYPE_ORIENTATION));
     }
 
     public void start(CallbackContext callbackContext) {
@@ -84,7 +87,7 @@ public class GeoSensorListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         // Controleer op sensor type
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        if (sensorEvent.sensor.getType() == TYPE_ACCELEROMETER) {
             Log.d(TAG, "execute onSensorChanged TYPE_ACCELEROMETER");
 
             synchronized (syncToken) {
@@ -96,7 +99,7 @@ public class GeoSensorListener implements SensorEventListener {
 
             logData(sensorEvent.sensor.getName(), sensorEvent);
 
-        }  else if (sensorEvent.sensor.getType() == Sensor.TYPE_GAME_ROTATION_VECTOR) {
+        }  else if (sensorEvent.sensor.getType() == TYPE_ORIENTATION) {
             Log.d(TAG, "execute onSensorChanged TYPE_GAME_ROTATION_VECTOR");
 
             synchronized (syncToken) {
