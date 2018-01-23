@@ -18,7 +18,7 @@ sensor = {
   },
 
   currentLocation: function(success, error) {
-    exec(success, error, "GeoInt", "getCurrentLocation");
+    exec(success, error, "GeoInt", "currentLocation");
   },
 
   getCurrentSensor: function(success, error) {
