@@ -46,3 +46,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 /bin/
+
+# Eclipse
+.classpath
+.idea/workspace.xml
+.project
+.settings
