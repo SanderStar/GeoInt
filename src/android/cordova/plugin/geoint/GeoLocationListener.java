@@ -43,6 +43,7 @@ public class GeoLocationListener implements LocationListener {
         Log.d(TAG, "execute stop");
         mOwner.getLocationManager().removeUpdates(this);
         mOwner.win("stopped", callbackContext);
+        mCallbacks.remove(callbackContext);
     }
 
     public void onLocationChanged(Location loc) {
