@@ -6,18 +6,20 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import cordova.plugin.geoint.domain.Position;
 
 public class GeoLocationListener implements LocationListener {
 
     private static String TAG;
 
     private GeoInt mOwner;
+
+    private Position mPosition = new Position();
 
     private List<CallbackContext> mCallbacks = new ArrayList<CallbackContext>();
 
@@ -43,22 +45,28 @@ public class GeoLocationListener implements LocationListener {
         Log.d(TAG, "execute stop");
         mOwner.getLocationManager().removeUpdates(this);
         mOwner.win("stopped", callbackContext);
-        mCallbacks.remove(callbackContext);
     }
 
     public void onLocationChanged(Location loc) {
         Log.d(TAG, "execute onLocationChanged");
 
-        String data = "Location changed: timestamp "
+        String data = "Position changed: timestamp "
                 + new Date(loc.getTime())
                 + " Lat: " + loc.getLatitude()
                 + " Lng: " + loc.getLongitude();
 
         Log.d(TAG, data);
 
+        mPosition.setTimestamp(loc.getTime());
+        mPosition.setLatitude(loc.getLatitude());
+        mPosition.setLongitude(loc.getLongitude());
+
+        // TODO don't send data anymore
+        /*
         for (CallbackContext callbackContext : mCallbacks) {
             mOwner.win(loc, callbackContext, true);
         }
+        */
     }
 
     @Override
@@ -75,6 +83,8 @@ public class GeoLocationListener implements LocationListener {
         Log.d(TAG, "status changed");
     }
 
-
+    public Position getData() {
+        return mPosition;
+    }
 
 }

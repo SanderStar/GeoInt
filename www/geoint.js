@@ -9,12 +9,16 @@ sensor = {
      exec(success, error, "GeoInt", "coolMethod", [args]);
   },
 
-  getLocation: function(success, error) {
-     exec(success, error, "GeoInt", "getLocation");
+  startLocation: function(success, error) {
+     exec(success, error, "GeoInt", "startLocation");
   },
 
   stopLocation: function(success, error) {
      exec(success, error, "GeoInt", "stopLocation");
+  },
+
+  currentLocation: function(success, error) {
+    exec(success, error, "GeoInt", "getCurrentLocation");
   },
 
   getCurrentSensor: function(success, error) {

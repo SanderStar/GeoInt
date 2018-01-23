@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
-import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 
@@ -17,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cordova.plugin.geoint.domain.Position;
 import cordova.plugin.geoint.domain.SensorItem;
 
 /**
@@ -55,14 +55,14 @@ public class GeoInt extends CordovaPlugin {
 
         this.mCallbackContext = callbackContext;
 
-        if (action == null || !action.matches("coolMethod|getLocation|stopLocation|startSensor|stopSensor|getCurrentSensor")) {
+        if (action == null || !action.matches("coolMethod|startLocation|stopLocation|currentLocation|startSensor|stopSensor|getCurrentSensor")) {
             // TODO set message
             return false;
         } else if ("coolMethod".equals(action)) {
             String message = args.getString(0);
             this.coolMethod(message);
             return true;
-        } else if ("getLocation".equals(action)) {
+        } else if ("startLocation".equals(action)) {
             if (!isGPSEnabled()) {
                 // TODO translate
                 this.mCallbackContext.error("GPS not enabled on device");
@@ -75,11 +75,14 @@ public class GeoInt extends CordovaPlugin {
                 requestPermission();
             } else {
                 Log.d(TAG, "permission");
-                getLocation(this.getCallbackContext());
+                // TODO startLocation(this.getCallbackContext());
             }
             return true;
         } else if ("stopLocation".equals(action)) {
             stopLocation(this.getCallbackContext());
+            return true;
+        } else if ("currentLocation".equals(action)) {
+            getCurrentPostion(this.getCallbackContext());
             return true;
         } else if ("getCurrentSensor".equals(action)) {
             getCurrentSensor(this.getCallbackContext());
@@ -132,9 +135,9 @@ public class GeoInt extends CordovaPlugin {
         return mCallbackContext;
     }
 
-    public void win(Location location, CallbackContext callbackContext, boolean keepCallback) {
+    public void win(Position position, CallbackContext callbackContext, boolean keepCallback) {
         Log.d(TAG, "win with location");
-        PluginResult result = new PluginResult(PluginResult.Status.OK, convertLocation(location));
+        PluginResult result = new PluginResult(PluginResult.Status.OK, converPosition(position));
         result.setKeepCallback(keepCallback);
         callbackContext.sendPluginResult(result);
     }
@@ -161,9 +164,14 @@ public class GeoInt extends CordovaPlugin {
         }
     }
 
-    private void getLocation(CallbackContext callbackContext) {
-        Log.d(TAG, "execute getLocation");
+    private void startLocation(CallbackContext callbackContext) {
+        Log.d(TAG, "execute startLocation");
         getLocationListener().start(callbackContext);
+    }
+
+    private void currentLocation(CallbackContext callbackContext) {
+        Log.d(TAG, "execute currentLocation");
+        win(getLocationListener().getData();
     }
 
     private void getCurrentSensor(CallbackContext callbackContext) {
@@ -178,6 +186,11 @@ public class GeoInt extends CordovaPlugin {
     private void stopLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute stopLocation");
         getLocationListener().stop(callbackContext);
+    }
+
+    private void getCurrentPostion(CallbackContext callbackContext) {
+        Log.d(TAG, "execute getCurrentPosition");
+        win(getLocationListener().getData(), callbackContext, true);
     }
 
     private void startSensor(CallbackContext callbackContext) {
@@ -205,7 +218,7 @@ public class GeoInt extends CordovaPlugin {
                 if (grantResults.length > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the related task you need to do.
                     Log.d(TAG, "permission grantend");
-                    getLocation(this.getCallbackContext());
+                    startLocation(this.getCallbackContext());
                 } else {
                     // permission denied, boo! Disable the functionality that depends on this permission.
                     Log.d(TAG, "permission denied");
@@ -222,13 +235,13 @@ public class GeoInt extends CordovaPlugin {
         return cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
-    private String convertLocation(Location loc) {
+    private String converPosition(Position pos) {
         Log.d(TAG, "execute convertLocation");
         JSONObject object = new JSONObject();
         try {
-            object.put("timestamp", loc.getTime());
-            object.put("latitude", loc.getLatitude());
-            object.put("longitude", loc.getLongitude());
+            object.put("timestamp", pos.getTimestamp());
+            object.put("latitude", pos.getLatitude());
+            object.put("longitude", pos.getLongitude());
         } catch (JSONException e) {
             // TODO exception handling
             Log.e(TAG, e.getLocalizedMessage());
