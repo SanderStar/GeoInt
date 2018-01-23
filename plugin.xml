@@ -19,5 +19,6 @@
 		<source-file src="src/android/cordova/plugin/geoint/domain/SensorItem.java" target-dir="src/cordova.plugin.geoint.domain/SensorItem" />
 		<source-file src="src/android/cordova/plugin/geoint/domain/Accelerometer.java" target-dir="src/cordova.plugin.geoint.domain/Accelerometer" />
 		<source-file src="src/android/cordova/plugin/geoint/domain/Orientation.java" target-dir="src/cordova.plugin.geoint.domain/Orientation" />
+		<source-file src="src/android/cordova/plugin/geoint/domain/Position.java" target-dir="src/cordova.plugin.geoint.domain/Position" />
 	</platform>
 </plugin>
