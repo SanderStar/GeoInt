@@ -47,8 +47,9 @@ Temporary Items
 .apdisk
 /bin/
 
+# Android studio
+
 # Eclipse
 .classpath
-.idea/workspace.xml
 .project
 .settings
