@@ -167,7 +167,7 @@ public class GeoInt extends CordovaPlugin {
     private void startLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute startLocation");
         getLocationListener().start(callbackContext);
-        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
+        win(getLocationListener().getData(), callbackContext, true);
     }
 
     private void getCurrentSensor(CallbackContext callbackContext) {

@@ -33,6 +33,8 @@ public class GeoLocationListener implements LocationListener {
     public void start(CallbackContext callbackContext) {
         Log.d(TAG, "execute start");
         try {
+            Location loc = mOwner.getLocationManager().getLastKnownLocation(mOwner.getProvider());
+            convert(loc);
             mOwner.getLocationManager().requestLocationUpdates(mOwner.getProvider(), 0, 0, this);
             mCallbacks.add(callbackContext);
             Log.d(TAG, getLocation(mPosition));
@@ -50,11 +52,17 @@ public class GeoLocationListener implements LocationListener {
     public void onLocationChanged(Location loc) {
         Log.d(TAG, "execute onLocationChanged");
 
+        convert(loc);
+
+        Log.d(TAG, getLocation(mPosition));
+    }
+
+    private void convert(Location loc) {
+        mPosition = new Position();
+
         mPosition.setTimestamp(loc.getTime());
         mPosition.setLatitude(loc.getLatitude());
         mPosition.setLongitude(loc.getLongitude());
-
-        Log.d(TAG, getLocation(mPosition));
     }
 
     private String getLocation(Position pos) {
