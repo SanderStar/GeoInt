@@ -35,6 +35,7 @@ public class GeoLocationListener implements LocationListener {
         try {
             mOwner.getLocationManager().requestLocationUpdates(mOwner.getProvider(), 0, 0, this);
             mCallbacks.add(callbackContext);
+            mOwner.win("started", callbackContext);
         } catch (SecurityException e) {
             Log.e(TAG, e.getLocalizedMessage());
             mOwner.getCallbackContext().error(e.getLocalizedMessage());
