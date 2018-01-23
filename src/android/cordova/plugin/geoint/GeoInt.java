@@ -75,7 +75,7 @@ public class GeoInt extends CordovaPlugin {
                 requestPermission();
             } else {
                 Log.d(TAG, "permission");
-                // TODO startLocation(this.getCallbackContext());
+                startLocation(this.getCallbackContext());
             }
             return true;
         } else if ("stopLocation".equals(action)) {
