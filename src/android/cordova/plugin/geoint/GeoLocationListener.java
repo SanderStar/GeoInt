@@ -35,6 +35,7 @@ public class GeoLocationListener implements LocationListener {
         try {
             mOwner.getLocationManager().requestLocationUpdates(mOwner.getProvider(), 0, 0, this);
             mCallbacks.add(callbackContext);
+            Log.d(TAG, getLocation(mPosition));
         } catch (SecurityException e) {
             Log.e(TAG, e.getLocalizedMessage());
             mOwner.getCallbackContext().error(e.getLocalizedMessage());
@@ -49,23 +50,18 @@ public class GeoLocationListener implements LocationListener {
     public void onLocationChanged(Location loc) {
         Log.d(TAG, "execute onLocationChanged");
 
-        String data = "Position changed: timestamp "
-                + new Date(loc.getTime())
-                + " Lat: " + loc.getLatitude()
-                + " Lng: " + loc.getLongitude();
-
-        Log.d(TAG, data);
-
         mPosition.setTimestamp(loc.getTime());
         mPosition.setLatitude(loc.getLatitude());
         mPosition.setLongitude(loc.getLongitude());
 
-        // TODO don't send data anymore
-        /*
-        for (CallbackContext callbackContext : mCallbacks) {
-            mOwner.win(loc, callbackContext, true);
-        }
-        */
+        Log.d(TAG, getLocation(mPosition));
+    }
+
+    private String getLocation(Position pos) {
+        return "Position changed: timestamp "
+                + pos.getTimestamp()
+                + " Lat: " + pos.getLatitude()
+                + " Lng: " + pos.getLongitude();
     }
 
     @Override
