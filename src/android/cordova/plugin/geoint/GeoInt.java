@@ -2,9 +2,11 @@ package cordova.plugin.geoint;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
@@ -36,6 +38,20 @@ public class GeoInt extends CordovaPlugin {
 
     private static final int GPS_POSITION  = 1;
 
+    private final static int RESULT_READ_JSON = 1;
+
+    /**
+     * Boolean which selects the readout by JSON
+     */
+    public static final String EXTRA_READ_JSON = "read_json";
+
+    /**
+     * Integer which selects the measurement for reading 0: all measurements,
+     * -1: only the last measurement, >0: one special measurement
+     */
+    public static final String EXTRA_READ_JSON_NUMBER = "read_json_number";
+
+
     // Network provider for low battery usage
     private String mProvider = LocationManager.NETWORK_PROVIDER;
 
@@ -55,13 +71,27 @@ public class GeoInt extends CordovaPlugin {
 
         this.mCallbackContext = callbackContext;
 
-        if (action == null || !action.matches("coolMethod|startLocation|stopLocation|currentLocation|startSensor|stopSensor|getCurrentSensor")) {
+        if (action == null || !action.matches("coolMethod|getTrunk|startLocation|stopLocation|currentLocation|startSensor|stopSensor|getCurrentSensor")) {
             // TODO set message
             return false;
         } else if ("coolMethod".equals(action)) {
             String message = args.getString(0);
             this.coolMethod(message);
             return true;
+        } else if ("getTrunk".equals(action)) {
+            // TODO Wil it call the onActivityResult
+            cordova.setActivityResultCallback(this);
+
+            Intent intent = new Intent("de.esders.ir.READOUT");
+            intent.putExtra(EXTRA_READ_JSON, true);
+            // read only the last measurement
+            intent.putExtra(EXTRA_READ_JSON_NUMBER, -1);
+            if (intent.resolveActivity(this.cordova.getActivity().getPackageManager()) != null) {
+                cordova.getActivity().startActivityForResult(intent, RESULT_READ_JSON);
+            } else {
+                // TODO make nice
+                Log.e(TAG, "Install " + Uri.parse("market://details?id=de.esders.ir"));
+            }
         } else if ("startLocation".equals(action)) {
             if (!isGPSEnabled()) {
                 // TODO translate
@@ -98,7 +128,10 @@ public class GeoInt extends CordovaPlugin {
         return false;
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)  {
+        Log.d(TAG,"onActivityResult called " + requestCode + " " + resultCode);
+    }
 
     private GeoLocationListener getLocationListener() {
         if (mLocationListener == null) {
