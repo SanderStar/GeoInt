@@ -60,9 +60,13 @@ public class GeoLocationListener implements LocationListener {
     private void convert(Location loc) {
         mPosition = new Position();
 
-        mPosition.setTimestamp(loc.getTime());
-        mPosition.setLatitude(loc.getLatitude());
-        mPosition.setLongitude(loc.getLongitude());
+        if (loc != null) {
+            mPosition.setTimestamp(loc.getTime());
+            mPosition.setLatitude(loc.getLatitude());
+            mPosition.setLongitude(loc.getLongitude());
+        } else {
+            Log.d(TAG, "Unknown location (null object)");
+        }
     }
 
     private String getLocation(Position pos) {
