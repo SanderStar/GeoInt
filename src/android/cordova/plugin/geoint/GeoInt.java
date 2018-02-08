@@ -38,6 +38,10 @@ public class GeoInt extends CordovaPlugin {
 
     private static final int GPS_POSITION  = 1;
 
+    private final static String CALLBACK_CONTEXT = "callback_context";
+    /**
+     *
+     */
     private final static int RESULT_READ_JSON = 1;
 
     /**
@@ -138,6 +142,8 @@ public class GeoInt extends CordovaPlugin {
             String jsonString = data.getStringExtra("json");
 
             Log.d(TAG, "Data " + jsonString);
+
+            win(jsonString, this.getCallbackContext());
         }
     }
 
