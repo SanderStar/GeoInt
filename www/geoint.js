@@ -9,6 +9,10 @@ sensor = {
      exec(success, error, "GeoInt", "coolMethod", [args]);
   },
 
+  getTrunk: function(success, error) {
+       exec(success, error, "GeoInt", "getTrunk");
+  },
+
   startLocation: function(success, error) {
      exec(success, error, "GeoInt", "startLocation");
   },
