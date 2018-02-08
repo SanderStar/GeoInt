@@ -131,7 +131,16 @@ public class GeoInt extends CordovaPlugin {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)  {
         Log.d(TAG,"onActivityResult called " + requestCode + " " + resultCode);
+
+        if (RESULT_READ_JSON == requestCode) {
+            // The device reading was successful
+
+            String jsonString = data.getStringExtra("json");
+
+            Log.d(TAG, "Data " + jsonString);
+        }
     }
+
 
     private GeoLocationListener getLocationListener() {
         if (mLocationListener == null) {
