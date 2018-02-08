@@ -143,7 +143,9 @@ public class GeoInt extends CordovaPlugin {
 
             Log.d(TAG, "Data " + jsonString);
 
-            win(jsonString, this.getCallbackContext());
+            PluginResult result = new PluginResult(PluginResult.Status.OK, jsonString);
+            result.setKeepCallback(true);
+            this.getCallbackContext().sendPluginResult(result);
         }
     }
 
