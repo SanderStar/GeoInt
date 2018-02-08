@@ -96,6 +96,7 @@ public class GeoInt extends CordovaPlugin {
                 // TODO make nice
                 Log.e(TAG, "Install " + Uri.parse("market://details?id=de.esders.ir"));
             }
+            return true;
         } else if ("startLocation".equals(action)) {
             if (!isGPSEnabled()) {
                 // TODO translate
