@@ -1,7 +1,8 @@
 # GeoInt
 Geo data interface plugin
 
-Cordova plugin voor Android tbv Geo en Sensor data.
+Cordova plugin voor Android tbv Bluetooth, Geo en Sensor data.
+- Bluetooth connectie Esders koffer
 - GPS locatie
 - Accelerometer data
 - Orientation data
