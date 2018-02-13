@@ -38,6 +38,25 @@ Resultaat (message):
 HelloWorld
 ```
 
+##### Esders koffer
+
+```javascript
+function doTrunk() {
+	var success = function(result) {
+		alert(result);
+	}
+
+	var error = function(error) {
+		console.log(error);
+	}
+	navigation.sensor.getTrunk(success, error);
+}
+```
+
+Resultaat (result):
+Is een JSON string.
+
+
 ##### Sensor data
 ```javascript
 var watchSensorId;
