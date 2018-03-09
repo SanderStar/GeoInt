@@ -91,10 +91,7 @@ public class GeoInt extends CordovaPlugin {
             return true;
         } else if ("getTrunk".equals(action)) {
             cordova.setActivityResultCallback(this);
-            Intent intent = new Intent("de.esders.ir.READOUT");
-            intent.putExtra(EXTRA_READ_JSON, true);
-            // read only the last measurement
-            intent.putExtra(EXTRA_READ_JSON_NUMBER, -1);
+            Intent intent = createTrunkIntent();
             if (intent.resolveActivity(this.cordova.getActivity().getPackageManager()) != null) {
                 cordova.getActivity().startActivityForResult(intent, RESULT_READ_JSON);
             } else {
@@ -104,6 +101,10 @@ public class GeoInt extends CordovaPlugin {
             return true;
         } else if ("getTrunkTest".equals(action)) {
             // Testing cordova plugin
+            Intent intent = createTrunkIntent();
+            if (intent.resolveActivity(this.cordova.getActivity().getPackageManager()) == null) {
+                this.askInstallation();
+            }
             getTrunkTest(this.getCallbackContext());
             return true;
         } else if ("startLocation".equals(action)) {
@@ -140,6 +141,14 @@ public class GeoInt extends CordovaPlugin {
         }
 
         return false;
+    }
+
+    private Intent createTrunkIntent() {
+        Intent intent = new Intent("de.esders.ir.READOUT");
+        intent.putExtra(EXTRA_READ_JSON, true);
+        // read only the last measurement
+        intent.putExtra(EXTRA_READ_JSON_NUMBER, -1);
+        return intent;
     }
 
     /**
