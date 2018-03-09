@@ -41,6 +41,8 @@ HelloWorld
 
 ##### Esders koffer
 
+Aanroepen van de koffer via de Esders IR app.
+
 ```javascript
 var success = function(result) {
     alert(result);
@@ -54,6 +56,22 @@ navigation.sensor.getTrunk(success, error);
 
 Resultaat (result):
 Is een JSON string.
+
+Aanroepen van de Cordova plugin tbv test Cordova plugin.
+
+```javascript
+var success = function(result) {
+    alert(result);
+}
+
+var error = function(error) {
+    console.log(error);
+}
+navigation.sensor.getTrunkTest(success, error);
+```
+
+Resultaat (result):
+Is een vast JSON string.
 
 
 ##### Sensor data
