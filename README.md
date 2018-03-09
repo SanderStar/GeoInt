@@ -71,7 +71,7 @@ navigation.sensor.getTrunkTest(success, error);
 ```
 
 Resultaat (result):
-Is een vast JSON string.
+Is een vaste JSON string.
 
 
 ##### Sensor data
