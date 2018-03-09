@@ -1,18 +1,23 @@
 package cordova.plugin.geoint;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.telecom.Call;
 import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.LOG;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +44,8 @@ public class GeoInt extends CordovaPlugin {
     private static final int GPS_POSITION  = 1;
 
     private final static String CALLBACK_CONTEXT = "callback_context";
+
+    private final static String ESDERS_IR_URL = "market://details?id=de.esders.ir";
     /**
      *
      */
@@ -75,7 +82,7 @@ public class GeoInt extends CordovaPlugin {
 
         this.mCallbackContext = callbackContext;
 
-        if (action == null || !action.matches("coolMethod|getTrunk|startLocation|stopLocation|currentLocation|startSensor|stopSensor|getCurrentSensor")) {
+        if (action == null || !action.matches("coolMethod|getTrunk|getTrunkTest|startLocation|stopLocation|currentLocation|startSensor|stopSensor|getCurrentSensor")) {
             // TODO set message
             return false;
         } else if ("coolMethod".equals(action)) {
@@ -83,9 +90,7 @@ public class GeoInt extends CordovaPlugin {
             this.coolMethod(message);
             return true;
         } else if ("getTrunk".equals(action)) {
-            // TODO Wil it call the onActivityResult
             cordova.setActivityResultCallback(this);
-
             Intent intent = new Intent("de.esders.ir.READOUT");
             intent.putExtra(EXTRA_READ_JSON, true);
             // read only the last measurement
@@ -93,9 +98,13 @@ public class GeoInt extends CordovaPlugin {
             if (intent.resolveActivity(this.cordova.getActivity().getPackageManager()) != null) {
                 cordova.getActivity().startActivityForResult(intent, RESULT_READ_JSON);
             } else {
-                // TODO make nice
-                Log.e(TAG, "Install " + Uri.parse("market://details?id=de.esders.ir"));
+                this.askInstallation();
+                Log.e(TAG, "Install " + Uri.parse(ESDERS_IR_URL));
             }
+            return true;
+        } else if ("getTrunkTest".equals(action)) {
+            // Testing cordova plugin
+
             return true;
         } else if ("startLocation".equals(action)) {
             if (!isGPSEnabled()) {
@@ -131,6 +140,29 @@ public class GeoInt extends CordovaPlugin {
         }
 
         return false;
+    }
+
+    /**
+     * Opens the PlayStore for the installation of Esders IR
+     */
+    private void askInstallation() {
+        final Activity activity = this.cordova.getActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final String message = "The App \"Esders IR\" is not installed. Open Play Store to start the installation?";
+        builder.setMessage(message);
+        builder.setCancelable(false);
+        builder.setPositiveButton(android.R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Open the corresponding page from the PlayStore
+                        Uri marketUri = Uri.parse(ESDERS_IR_URL);
+                        Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                        activity.startActivity(marketIntent);
+                    }
+                });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.show();
     }
 
     @Override
@@ -215,6 +247,11 @@ public class GeoInt extends CordovaPlugin {
         }
     }
 
+    private void getTrunkTest(CallbackContext callbackContext) {
+        LOG.d(TAG, "execute getTrunkTest");
+        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, convertTrunkTest()));
+    }
+
     private void startLocation(CallbackContext callbackContext) {
         Log.d(TAG, "execute startLocation");
         getLocationListener().start(callbackContext);
@@ -281,6 +318,19 @@ public class GeoInt extends CordovaPlugin {
     private boolean hasPermission() {
         Log.d(TAG, "execute hasPermission");
         return cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+    }
+
+    private String convertTrunkTest() {
+        Log.d(TAG, "execute convertTrunkTest");
+        JSONObject object = new JSONObject();
+        try {
+            object.put("result", "Helloworld");
+        } catch (JSONException e) {
+            // TODO exception handling
+            Log.e(TAG, e.getLocalizedMessage());
+            getCallbackContext().error(e.getLocalizedMessage());
+        }
+        return object.toString();
     }
 
     private String converPosition(Position pos) {
