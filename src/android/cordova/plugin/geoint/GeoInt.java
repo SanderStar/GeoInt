@@ -104,7 +104,7 @@ public class GeoInt extends CordovaPlugin {
             return true;
         } else if ("getTrunkTest".equals(action)) {
             // Testing cordova plugin
-
+            getTrunkTest(this.getCallbackContext());
             return true;
         } else if ("startLocation".equals(action)) {
             if (!isGPSEnabled()) {
