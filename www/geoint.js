@@ -10,7 +10,11 @@ sensor = {
   },
 
   getTrunk: function(success, error) {
-       exec(success, error, "GeoInt", "getTrunk");
+    exec(success, error, "GeoInt", "getTrunk");
+  },
+
+  getTrunkTest: function(success, error) {
+    exec(success, error, "GeoInt", "getTrunkTest");
   },
 
   startLocation: function(success, error) {
