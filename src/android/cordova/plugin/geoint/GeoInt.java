@@ -179,13 +179,16 @@ public class GeoInt extends CordovaPlugin {
         Log.d(TAG,"onActivityResult called " + requestCode + " " + resultCode);
 
         if (RESULT_READ_JSON == requestCode) {
-            // The device reading was successful
-
-            String jsonString = data.getStringExtra("json");
-
-            Log.d(TAG, "Data " + jsonString);
-
-            PluginResult result = new PluginResult(PluginResult.Status.OK, jsonString);
+            // TODO check exception handling als geen verbinding met koffer via bluetooth
+            Log.d(TAG, "onActivityResult data " + data);
+            PluginResult result;
+            if (data != null) {
+                String jsonString = data.getStringExtra("json");
+                Log.d(TAG, "Data " + jsonString);
+                result = new PluginResult(PluginResult.Status.OK, jsonString);
+            } else {
+                result = new PluginResult(PluginResult.Status.ERROR, "no data");
+            }
             result.setKeepCallback(true);
             this.getCallbackContext().sendPluginResult(result);
         }
