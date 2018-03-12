@@ -332,17 +332,25 @@ public class GeoInt extends CordovaPlugin {
         return cordova.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
+    /**
+     * Genereer dummy data
+     *
+     * Kan veel mooier.
+     * @return
+     */
     private String convertTrunkTest() {
         Log.d(TAG, "execute convertTrunkTest");
-        JSONObject object = new JSONObject();
-        try {
-            object.put("result", "Helloworld");
-        } catch (JSONException e) {
-            // TODO exception handling
-            Log.e(TAG, e.getLocalizedMessage());
-            getCallbackContext().error(e.getLocalizedMessage());
-        }
-        return object.toString();
+        final String json1 = "{\"version\": 1, \"serialno\": \"27G01234\", \"swversion\": \"60020007\", \"man\": \"Esders GmbH\", ";
+        final String json2 = "\"dev\": \"DT2000NL\", \"servicedate\": \"2018-07-15\", \"meas_count\": 1, \"time\": \"2014-05-20T14:16:05\", ";
+        final String json3 = "\"battery\": 75, \"last_charge\": \"2017-12-21\", \"dev_info1\": [128,54500], \"dev_info2\": 200, ";
+        final String json4 = "\"meas\": [{\"time_start\": \"2014-05-20T14:12:18\", \"time_end\": \"2014-05-20T14:12:18\", \"menu_no\": 2,";
+        final String json5 = "\"menu_name\": \"Aansluitleidingen\", \"meas_no\": 1, \"res_blk_size\": 10, \"extra\": [\"9217XJ 40\", \"Tester 1\"],";
+        final String json6 = "\"method\": 0, \"result_cnt\": 9, \"result\": {\"p_start\": [1076.2,10], \"p_end\":[1060.8,10], \"p_diff\":[1076.2,10], \"t_stabil\": [0,100], \"t_meas\":[300,100],\"meas_type\":106}}]}";
+
+        final StringBuffer json = new StringBuffer().append(json1).append(json2).append(json3).append(json4)
+                .append(json5).append(json6);
+
+        return json.toString();
     }
 
     private String converPosition(Position pos) {
